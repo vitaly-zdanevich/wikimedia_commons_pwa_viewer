@@ -55,3 +55,21 @@ Then open http://localhost:4173/wikimedia_commons_pwa_viewer/.
 
 GitHub Actions lints, tests, builds and deploys `dist/` to GitHub Pages on every
 push to `main` (repository Settings → Pages → Source: GitHub Actions).
+
+## My other Wikimedia-related projects
+
+- **[PWAWikimediaCommonsUploader](https://github.com/vitaly-zdanevich/PWAWikimediaCommonsUploader)** —
+  PWA that uploads photos and videos to Wikimedia Commons; the companion of this
+  viewer ([open the app](https://vitaly-zdanevich.github.io/PWAWikimediaCommonsUploader/))
+- [bot_telegram_wikimedia_commons_uploader](https://github.com/vitaly-zdanevich/bot_telegram_wikimedia_commons_uploader) —
+  Telegram bot that uploads images/media to Wikimedia Commons under each user's own account
+- [bot_telegram_wikimedia_commons](https://github.com/vitaly-zdanevich/bot_telegram_wikimedia_commons) —
+  Telegram and CLI bot for searching Wikimedia Commons media
+- [bot_telegram_wikipedia](https://github.com/vitaly-zdanevich/bot_telegram_wikipedia) —
+  Telegram bot for Wikipedia search
+- [gthumb-copy-wikimedia-commons-link](https://github.com/vitaly-zdanevich/gthumb-copy-wikimedia-commons-link) —
+  gThumb extension to copy a Wikimedia Commons link for a local file
+- [wikipedia_diffs_to_evernote](https://github.com/vitaly-zdanevich/wikipedia_diffs_to_evernote) —
+  daily sync of a Wikipedia user's edits to Evernote, one note per diff
+- [wikipedia-userstyle-dark-minimum](https://github.com/vitaly-zdanevich/wikipedia-userstyle-dark-minimum) —
+  dark and minimal userstyle for Wikipedia, no browser plugin needed
