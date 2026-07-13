@@ -1,5 +1,12 @@
-import { describe, expect, it } from 'vitest';
-import { encodePng, splashAssets } from './splash.ts';
+import { beforeAll, describe, expect, it } from 'vitest';
+import { encodePng, splashAssets, type SplashAsset } from './splash.ts';
+
+// Generating all splash PNGs takes seconds under coverage
+// instrumentation on CI; do it once for the whole suite.
+let assets: SplashAsset[];
+beforeAll(() => {
+	assets = splashAssets();
+}, 60000);
 
 describe('encodePng', () => {
 	it('produces a valid PNG signature and IHDR', () => {
@@ -13,7 +20,6 @@ describe('encodePng', () => {
 
 describe('splashAssets', () => {
 	it('generates a dark #000 and light variant per profile', () => {
-		const assets = splashAssets();
 		const dark = assets.filter((a) => a.media.includes('(prefers-color-scheme: dark)'));
 		const light = assets.filter((a) => a.media.includes('(prefers-color-scheme: light)'));
 		expect(dark.length).toBe(light.length);
@@ -21,7 +27,7 @@ describe('splashAssets', () => {
 	});
 
 	it('targets each device profile with a full media query', () => {
-		for (const asset of splashAssets()) {
+		for (const asset of assets) {
 			expect(asset.media).toMatch(/device-width: \d+px/);
 			expect(asset.media).toMatch(/-webkit-device-pixel-ratio: \d/);
 			expect(asset.media).toMatch(/orientation: (portrait|landscape)/);
