@@ -71,12 +71,36 @@ function detailRows(details: ImageDetails): HTMLElement[] {
 	return rows;
 }
 
+// Full-resolution viewer inside the PWA; closing it lands back on the
+// grid (or the info overlay) untouched, at the same scroll position.
+function showOriginal(image: Image): void {
+	const dialog = el('dialog', 'viewer');
+	const img = el('img');
+	img.src = image.originalUrl;
+	img.alt = image.title;
+	dialog.append(img);
+	dialog.addEventListener('click', () => dialog.close());
+	dialog.addEventListener('close', () => dialog.remove());
+	document.body.append(dialog);
+	dialog.showModal();
+}
+
 export function showImageInfo(image: Image): void {
 	const dialog = el('dialog', 'info');
 	const body = el('div', 'info-body');
 	const status = row('Loading…');
+	const original = el('p', 'info-row');
+	const originalLink = el('a');
+	originalLink.href = image.originalUrl;
+	originalLink.textContent = 'Original';
+	originalLink.addEventListener('click', (event) => {
+		event.preventDefault();
+		showOriginal(image);
+	});
+	original.append(originalLink);
 	body.append(
 		externalLink(image.pageUrl, image.title.replace(/^File:/, ''), 'info-name'),
+		original,
 		status,
 	);
 	dialog.append(body);

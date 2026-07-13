@@ -3,6 +3,7 @@ const API = 'https://commons.wikimedia.org/w/api.php';
 export interface Image {
 	title: string;
 	thumbUrl: string;
+	originalUrl: string;
 	pageUrl: string;
 }
 
@@ -45,7 +46,7 @@ async function get(params: Record<string, string>): Promise<unknown> {
 
 interface QueryPage {
 	title: string;
-	imageinfo?: { thumburl: string; descriptionurl: string }[];
+	imageinfo?: { thumburl: string; url: string; descriptionurl: string }[];
 	index?: number;
 }
 
@@ -58,6 +59,7 @@ function pagesToImages(data: unknown): Image[] {
 		.map((p) => ({
 			title: p.title,
 			thumbUrl: p.imageinfo![0].thumburl,
+			originalUrl: p.imageinfo![0].url,
 			pageUrl: p.imageinfo![0].descriptionurl,
 		}));
 }
