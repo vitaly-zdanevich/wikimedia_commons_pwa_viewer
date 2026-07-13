@@ -42,6 +42,11 @@ describe('parseImageDetails', () => {
 						},
 					}],
 					categories: [{ title: 'Category:Black_cats' }],
+					globalusage: [
+						{ title: 'Cat', url: 'https://en.wikipedia.org/wiki/Cat', wiki: 'en.wikipedia.org' },
+						{ title: 'Kot', url: 'https://pl.wikipedia.org/wiki/Kot', wiki: 'pl.wikipedia.org' },
+						{ title: 'Chat', url: 'https://fr.wikiquote.org/wiki/Chat', wiki: 'fr.wikiquote.org' },
+					],
 				},
 			},
 		},
@@ -67,6 +72,13 @@ describe('parseImageDetails', () => {
 		expect(details.caption).toBe('A cat');
 	});
 
+	it('lists Wikipedia usage only, with the language prefix', () => {
+		expect(parseImageDetails(main, versions, caption).usage).toEqual([
+			{ title: 'Cat', url: 'https://en.wikipedia.org/wiki/Cat', lang: 'en' },
+			{ title: 'Kot', url: 'https://pl.wikipedia.org/wiki/Kot', lang: 'pl' },
+		]);
+	});
+
 	it('picks the caption for the requested language', () => {
 		expect(parseImageDetails(main, versions, caption, 'de-DE').caption).toBe('Eine Katze');
 	});
@@ -75,6 +87,7 @@ describe('parseImageDetails', () => {
 		const details = parseImageDetails({}, {}, undefined);
 		expect(details.versions).toBe(0);
 		expect(details.categories).toEqual([]);
+		expect(details.usage).toEqual([]);
 		expect(details.caption).toBeUndefined();
 		expect(details.license).toBeUndefined();
 	});

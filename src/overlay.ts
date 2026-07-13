@@ -44,6 +44,20 @@ function detailRows(details: ImageDetails): HTMLElement[] {
 		rows.push(p);
 	}
 	if (details.versions > 1) rows.push(row(String(details.versions), 'Versions'));
+	if (details.usage.length > 0) {
+		const section = el('div', 'info-usage');
+		const heading = el('p', 'info-row');
+		const strong = el('strong');
+		strong.textContent = 'Used in:';
+		heading.append(strong);
+		section.append(heading);
+		for (const usage of details.usage) {
+			const line = el('p', 'info-row');
+			line.append(externalLink(usage.url, usage.title), ` (${usage.lang})`);
+			section.append(line);
+		}
+		rows.push(section);
+	}
 	if (details.categories.length > 0) {
 		const chips = el('nav', 'chips');
 		for (const category of details.categories) {

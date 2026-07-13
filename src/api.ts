@@ -152,6 +152,12 @@ export async function searchImages(
 	};
 }
 
+export interface Usage {
+	title: string;
+	url: string;
+	lang: string;
+}
+
 export interface ImageDetails {
 	caption?: string;
 	description?: string;
@@ -161,12 +167,14 @@ export interface ImageDetails {
 	license?: string;
 	licenseUrl?: string;
 	versions: number;
+	usage: Usage[];
 	categories: string[];
 }
 
 interface DetailsPage {
 	imageinfo?: { extmetadata?: Record<string, { value?: string }> }[];
 	categories?: { title: string }[];
+	globalusage?: { title: string; url: string; wiki: string }[];
 }
 
 function firstPage(data: unknown): DetailsPage | undefined {
@@ -200,6 +208,13 @@ export function parseImageDetails(
 		license: field('LicenseShortName'),
 		licenseUrl: field('LicenseUrl'),
 		versions: firstPage(versions)?.imageinfo?.length ?? 0,
+		usage: (firstPage(main)?.globalusage ?? [])
+			.filter((u) => u.wiki.endsWith('.wikipedia.org'))
+			.map((u) => ({
+				title: u.title.replace(/_/g, ' '),
+				url: u.url,
+				lang: u.wiki.replace('.wikipedia.org', ''),
+			})),
 		categories: (firstPage(main)?.categories ?? []).map((c) => normalizeCategory(c.title)),
 	};
 }
@@ -209,10 +224,12 @@ export async function fetchImageDetails(title: string, lang = 'en'): Promise<Ima
 		get({
 			action: 'query',
 			titles: title,
-			prop: 'imageinfo|categories',
+			prop: 'imageinfo|categories|globalusage',
 			iiprop: 'extmetadata',
 			clshow: '!hidden',
 			cllimit: '100',
+			guprop: 'url',
+			gulimit: '100',
 		}),
 		get({
 			action: 'query',
