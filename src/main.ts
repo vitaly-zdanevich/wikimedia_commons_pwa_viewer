@@ -51,6 +51,9 @@ searchInput.addEventListener('input', () => {
 			const link = document.createElement('a');
 			link.href = categoryHash(category);
 			link.textContent = category;
+			link.addEventListener('click', () => {
+				searchInput.value = category;
+			});
 			suggestions.append(link);
 		}
 	}, 250);
