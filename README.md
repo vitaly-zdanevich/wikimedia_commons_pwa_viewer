@@ -1,5 +1,17 @@
 # wikimedia_commons_pwa_viewer
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=vitaly-zdanevich_wikimedia_commons_pwa_viewer&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=vitaly-zdanevich_wikimedia_commons_pwa_viewer)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=vitaly-zdanevich_wikimedia_commons_pwa_viewer&metric=coverage)](https://sonarcloud.io/summary/new_code?id=vitaly-zdanevich_wikimedia_commons_pwa_viewer)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=vitaly-zdanevich_wikimedia_commons_pwa_viewer&metric=bugs)](https://sonarcloud.io/summary/new_code?id=vitaly-zdanevich_wikimedia_commons_pwa_viewer)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=vitaly-zdanevich_wikimedia_commons_pwa_viewer&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=vitaly-zdanevich_wikimedia_commons_pwa_viewer)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=vitaly-zdanevich_wikimedia_commons_pwa_viewer&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=vitaly-zdanevich_wikimedia_commons_pwa_viewer)
+[![Duplicated Lines](https://sonarcloud.io/api/project_badges/measure?project=vitaly-zdanevich_wikimedia_commons_pwa_viewer&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=vitaly-zdanevich_wikimedia_commons_pwa_viewer)
+[![Maintainability](https://sonarcloud.io/api/project_badges/measure?project=vitaly-zdanevich_wikimedia_commons_pwa_viewer&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=vitaly-zdanevich_wikimedia_commons_pwa_viewer)
+[![Reliability](https://sonarcloud.io/api/project_badges/measure?project=vitaly-zdanevich_wikimedia_commons_pwa_viewer&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=vitaly-zdanevich_wikimedia_commons_pwa_viewer)
+[![Security](https://sonarcloud.io/api/project_badges/measure?project=vitaly-zdanevich_wikimedia_commons_pwa_viewer&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=vitaly-zdanevich_wikimedia_commons_pwa_viewer)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=vitaly-zdanevich_wikimedia_commons_pwa_viewer&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=vitaly-zdanevich_wikimedia_commons_pwa_viewer)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=vitaly-zdanevich_wikimedia_commons_pwa_viewer&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=vitaly-zdanevich_wikimedia_commons_pwa_viewer)
+
 A minimal PWA for browsing [Wikimedia Commons](https://commons.wikimedia.org/) images.
 
 - Gapless image feed: one image per line, or two via preferences (⚙)
