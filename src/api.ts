@@ -91,6 +91,19 @@ export async function fetchCategoryImages(
 	};
 }
 
+// The Artist extmetadata is HTML, usually with a link to the author's
+// User: page; the page name is the account name uploads are filed under.
+export function extractUsername(artistHtml: string): string | undefined {
+	let html = artistHtml;
+	try {
+		html = decodeURIComponent(artistHtml);
+	} catch {
+		// Not URL-encoded; use as is.
+	}
+	const match = /User:([^"'/?#&<>]+)/.exec(html);
+	return match ? match[1].replace(/_/g, ' ').trim() : undefined;
+}
+
 export async function fetchUserImages(
 	user: string,
 	width: number,

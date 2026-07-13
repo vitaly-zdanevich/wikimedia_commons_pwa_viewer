@@ -1,6 +1,6 @@
-import { fetchImageDetails, type Image, type ImageDetails } from './api.ts';
+import { extractUsername, fetchImageDetails, type Image, type ImageDetails } from './api.ts';
 import { el } from './dom.ts';
-import { categoryHash } from './router.ts';
+import { categoryHash, userHash } from './router.ts';
 
 // Extmetadata values are HTML; the overlay shows plain text.
 function htmlToText(html: string): string {
@@ -33,7 +33,19 @@ function detailRows(details: ImageDetails): HTMLElement[] {
 	if (details.description) rows.push(row(htmlToText(details.description)));
 	if (details.date) rows.push(row(htmlToText(details.date), 'Date'));
 	if (details.source) rows.push(row(htmlToText(details.source), 'Source'));
-	if (details.author) rows.push(row(htmlToText(details.author), 'Author'));
+	if (details.author) {
+		// The author links to all uploads from that account.
+		const text = htmlToText(details.author);
+		const username = extractUsername(details.author) ?? text;
+		const p = el('p', 'info-row');
+		const strong = el('strong');
+		strong.textContent = 'Author: ';
+		const link = el('a');
+		link.href = userHash(username);
+		link.textContent = text || username;
+		p.append(strong, link);
+		rows.push(p);
+	}
 	if (details.license) {
 		const p = el('p', 'info-row');
 		p.append(

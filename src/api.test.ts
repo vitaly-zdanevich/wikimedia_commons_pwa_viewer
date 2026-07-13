@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { apiUrl, normalizeCategory, parseImageDetails, thumbWidth } from './api.ts';
+import { apiUrl, extractUsername, normalizeCategory, parseImageDetails, thumbWidth } from './api.ts';
 
 describe('apiUrl', () => {
 	it('targets the Commons API with CORS enabled', () => {
@@ -23,6 +23,22 @@ describe('normalizeCategory', () => {
 
 	it('keeps plain names untouched', () => {
 		expect(normalizeCategory('Cats')).toBe('Cats');
+	});
+});
+
+describe('extractUsername', () => {
+	it('takes the User: page name from the artist link', () => {
+		expect(extractUsername(
+			'<a href="//commons.wikimedia.org/wiki/User:Some_User" title="User:Some User">Some User</a>',
+		)).toBe('Some User');
+	});
+
+	it('ignores subpages and query strings', () => {
+		expect(extractUsername('<a href="/wiki/User:Foo/Gallery?x=1">Foo</a>')).toBe('Foo');
+	});
+
+	it('returns undefined without a user link', () => {
+		expect(extractUsername('NASA')).toBeUndefined();
 	});
 });
 
