@@ -15,11 +15,29 @@ Client-side only — talks directly to the Commons API (`origin=*` CORS), no bac
 
 ```sh
 npm install
-npm run dev    # dev server
 npm run lint   # eslint
 npm test       # vitest
 npm run build  # type-check + production build to dist/
 ```
+
+## Serve locally for testing
+
+```sh
+npm run dev
+```
+
+Then open http://localhost:5173/wikimedia_commons_pwa_viewer/ — hot reload,
+no service worker.
+
+To test the real production build (including the service worker, offline
+mode and iOS splash screens):
+
+```sh
+npm run build
+npm run preview
+```
+
+Then open http://localhost:4173/wikimedia_commons_pwa_viewer/.
 
 ## Deployment
 
