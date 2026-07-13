@@ -37,7 +37,6 @@ header {
 	top: 0;
 	background: var(--bg);
 	z-index: 1;
-	transition: transform 0.15s ease;
 }
 
 header.hidden {
@@ -132,7 +131,6 @@ header button {
 	margin: 0;
 	padding: 0;
 	border: none;
-	transition: filter 0.15s ease;
 }
 
 /* While the info overlay is open, only the tapped image stays visible. */
