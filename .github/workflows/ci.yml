@@ -25,7 +25,7 @@ jobs:
       - run: npm test -- --coverage
       - run: npm run build
       # Skips until the SONAR_TOKEN repository secret exists.
-      - uses: SonarSource/sonarqube-scan-action@v5
+      - uses: SonarSource/sonarqube-scan-action@v8
         if: ${{ env.SONAR_TOKEN != '' }}
       - uses: actions/upload-pages-artifact@v3
         if: github.ref == 'refs/heads/main'
