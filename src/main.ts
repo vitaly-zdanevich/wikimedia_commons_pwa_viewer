@@ -123,6 +123,19 @@ prefsDialog.addEventListener('click', (event) => {
 	if (event.target === prefsDialog) prefsDialog.close();
 });
 
+// Build info: version and the commits this build was made from.
+{
+	const about = document.querySelector<HTMLElement>('#about')!;
+	const version = document.createElement('p');
+	version.textContent = `Version ${__APP_VERSION__}`;
+	about.append(version);
+	for (const commit of __COMMITS__) {
+		const line = document.createElement('p');
+		line.textContent = commit;
+		about.append(line);
+	}
+}
+
 // Hide the top bar while scrolling down, bring it back on scroll up.
 let lastScrollY = window.scrollY;
 window.addEventListener('scroll', () => {

@@ -1,5 +1,20 @@
+import { execSync } from 'node:child_process';
+import { readFileSync } from 'node:fs';
 import { defineConfig, type Plugin } from 'vitest/config';
 import { appleTouchIcon, splashAssets } from './scripts/splash.ts';
+
+const version: string = JSON.parse(readFileSync('./package.json', 'utf8')).version;
+
+function recentCommits(): string[] {
+	try {
+		return execSync('git log -5 --date=short "--pretty=format:%ad %s"')
+			.toString()
+			.split('\n')
+			.filter(Boolean);
+	} catch {
+		return [];
+	}
+}
 
 // Emits iOS splash screens (light/dark via prefers-color-scheme) and the
 // apple-touch-icon, and injects the matching <link> tags into index.html.
@@ -44,6 +59,10 @@ function iosSplash(): Plugin {
 export default defineConfig({
 	base: '/wikimedia_commons_pwa_viewer/',
 	plugins: [iosSplash()],
+	define: {
+		__APP_VERSION__: JSON.stringify(version),
+		__COMMITS__: JSON.stringify(recentCommits()),
+	},
 	build: {
 		minify: true,
 		rollupOptions: {
