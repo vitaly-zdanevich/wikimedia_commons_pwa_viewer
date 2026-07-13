@@ -14,3 +14,13 @@ export function getColumns(storage: StorageLike = localStorage): Columns {
 export function setColumns(columns: Columns, storage: StorageLike = localStorage): void {
 	storage.setItem(KEY, String(columns));
 }
+
+const USER_KEY = 'username';
+
+export function getUsername(storage: StorageLike = localStorage): string {
+	return storage.getItem(USER_KEY) ?? '';
+}
+
+export function setUsername(name: string, storage: StorageLike = localStorage): void {
+	storage.setItem(USER_KEY, name);
+}

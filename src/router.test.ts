@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { categoryHash, nearbyHash, parseHash, searchHash } from './router.ts';
+import { categoryHash, nearbyHash, parseHash, searchHash, userHash } from './router.ts';
 
 describe('parseHash', () => {
 	it('defaults to home', () => {
@@ -20,6 +20,14 @@ describe('parseHash', () => {
 			view: 'search',
 			query: 'sunset',
 		});
+	});
+
+	it('parses user uploads routes', () => {
+		expect(parseHash('#/user/Some%20User')).toEqual({
+			view: 'user',
+			user: 'Some User',
+		});
+		expect(parseHash('#/user/')).toEqual({ view: 'home' });
 	});
 
 	it('parses nearby coordinates', () => {
@@ -47,6 +55,13 @@ describe('hash builders round-trip through parseHash', () => {
 		expect(parseHash(searchHash('sunset over sea'))).toEqual({
 			view: 'search',
 			query: 'sunset over sea',
+		});
+	});
+
+	it('user', () => {
+		expect(parseHash(userHash('Some User'))).toEqual({
+			view: 'user',
+			user: 'Some User',
 		});
 	});
 

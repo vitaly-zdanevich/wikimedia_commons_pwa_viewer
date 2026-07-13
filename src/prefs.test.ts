@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { getColumns, setColumns } from './prefs.ts';
+import { getColumns, getUsername, setColumns, setUsername } from './prefs.ts';
 
 function fakeStorage(): Storage {
 	const data = new Map<string, string>();
@@ -30,5 +30,17 @@ describe('columns preference', () => {
 		const storage = fakeStorage();
 		storage.setItem('columns', 'lots');
 		expect(getColumns(storage)).toBe(1);
+	});
+});
+
+describe('username preference', () => {
+	it('defaults to empty', () => {
+		expect(getUsername(fakeStorage())).toBe('');
+	});
+
+	it('persists the name', () => {
+		const storage = fakeStorage();
+		setUsername('Some User', storage);
+		expect(getUsername(storage)).toBe('Some User');
 	});
 });

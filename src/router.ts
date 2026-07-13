@@ -2,6 +2,7 @@ export type Route =
 	| { view: 'home' }
 	| { view: 'category'; category: string }
 	| { view: 'search'; query: string }
+	| { view: 'user'; user: string }
 	| { view: 'nearby'; lat: number; lon: number };
 
 export function parseHash(hash: string): Route {
@@ -14,6 +15,9 @@ export function parseHash(hash: string): Route {
 			break;
 		case 'search':
 			if (arg) return { view: 'search', query: arg };
+			break;
+		case 'user':
+			if (arg) return { view: 'user', user: arg };
 			break;
 		case 'nearby': {
 			const [lat, lon] = arg.split(',').map(Number);
@@ -32,6 +36,10 @@ export function categoryHash(category: string): string {
 
 export function searchHash(query: string): string {
 	return `#/search/${encodeURIComponent(query)}`;
+}
+
+export function userHash(user: string): string {
+	return `#/user/${encodeURIComponent(user)}`;
 }
 
 export function nearbyHash(lat: number, lon: number): string {

@@ -4,6 +4,7 @@ import {
 	fetchNearby,
 	fetchParentCategories,
 	fetchSubcategories,
+	fetchUserImages,
 	searchImages,
 	thumbWidth,
 } from './api.ts';
@@ -110,6 +111,11 @@ export async function renderCategory(root: HTMLElement, category: string): Promi
 	]);
 	categoryChips(chipsRoot, '↑', parents);
 	categoryChips(chipsRoot, '↓', subcats);
+}
+
+export function renderUser(root: HTMLElement, user: string): void {
+	document.title = user;
+	imageFeed(root, (cont) => fetchUserImages(user, currentThumbWidth(), cont));
 }
 
 export function renderSearch(root: HTMLElement, query: string): void {

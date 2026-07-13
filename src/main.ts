@@ -1,7 +1,7 @@
 import { suggestCategories } from './api.ts';
-import { getColumns, setColumns, type Columns } from './prefs.ts';
-import { categoryHash, nearbyHash, parseHash, searchHash } from './router.ts';
-import { renderCategory, renderHome, renderNearby, renderSearch } from './views.ts';
+import { getColumns, getUsername, setColumns, setUsername, type Columns } from './prefs.ts';
+import { categoryHash, nearbyHash, parseHash, searchHash, userHash } from './router.ts';
+import { renderCategory, renderHome, renderNearby, renderSearch, renderUser } from './views.ts';
 import './style.css';
 
 const app = document.querySelector<HTMLElement>('#app')!;
@@ -11,6 +11,8 @@ const suggestions = document.querySelector<HTMLElement>('#suggestions')!;
 const geoButton = document.querySelector<HTMLButtonElement>('#geo')!;
 const prefsButton = document.querySelector<HTMLButtonElement>('#prefs')!;
 const prefsDialog = document.querySelector<HTMLDialogElement>('#prefs-dialog')!;
+const usernameInput = document.querySelector<HTMLInputElement>('#username')!;
+const userLink = document.querySelector<HTMLAnchorElement>('#user-link')!;
 
 function applyColumns(columns: Columns): void {
 	document.documentElement.style.setProperty('--cols', String(columns));
@@ -27,6 +29,9 @@ function render(): void {
 			break;
 		case 'search':
 			void renderSearch(app, route.query);
+			break;
+		case 'user':
+			void renderUser(app, route.user);
 			break;
 		case 'nearby':
 			void renderNearby(app, route.lat, route.lon);
@@ -74,11 +79,28 @@ geoButton.addEventListener('click', () => {
 	);
 });
 
+// The saved user name becomes a link to that user's uploads.
+function refreshUserLink(): void {
+	const name = usernameInput.value.trim();
+	userLink.hidden = !name;
+	userLink.href = name ? userHash(name) : '#';
+	userLink.textContent = name ? `Uploads by ${name}` : '';
+}
+
+usernameInput.addEventListener('input', () => {
+	setUsername(usernameInput.value.trim());
+	refreshUserLink();
+});
+
+userLink.addEventListener('click', () => prefsDialog.close());
+
 prefsButton.addEventListener('click', () => {
 	const checked = prefsDialog.querySelector<HTMLInputElement>(
 		`input[value="${getColumns()}"]`,
 	);
 	if (checked) checked.checked = true;
+	usernameInput.value = getUsername();
+	refreshUserLink();
 	prefsDialog.showModal();
 });
 

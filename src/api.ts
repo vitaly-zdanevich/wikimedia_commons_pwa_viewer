@@ -91,6 +91,30 @@ export async function fetchCategoryImages(
 	};
 }
 
+export async function fetchUserImages(
+	user: string,
+	width: number,
+	cont?: string,
+): Promise<ImagePage> {
+	const params: Record<string, string> = {
+		action: 'query',
+		generator: 'allimages',
+		gaisort: 'timestamp',
+		gaidir: 'descending',
+		gaiuser: user,
+		gailimit: '50',
+		prop: 'imageinfo',
+		iiprop: 'url',
+		iiurlwidth: String(width),
+	};
+	if (cont) params.gaicontinue = cont;
+	const data = await get(params);
+	return {
+		images: pagesToImages(data),
+		continueToken: continueToken(data, 'gaicontinue'),
+	};
+}
+
 export async function fetchSubcategories(category: string): Promise<string[]> {
 	const data = await get({
 		action: 'query',
