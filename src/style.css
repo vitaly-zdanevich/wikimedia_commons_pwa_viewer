@@ -222,6 +222,7 @@ dialog.info::backdrop {
 }
 
 .info-name {
+	margin-top: 0.8em;
 	color: inherit;
 	font-weight: bold;
 	overflow-wrap: break-word;
