@@ -14,7 +14,11 @@ import { getColumns } from './prefs.ts';
 import { categoryHash } from './router.ts';
 
 function currentThumbWidth(): number {
-	return thumbWidth(getColumns(), window.innerWidth * (window.devicePixelRatio || 1));
+	// Cap the density multiplier: on DPR-3 phones full-density thumbs
+	// exceed iOS Safari's decoded-image memory budget and WebKit
+	// renders black tiles instead of some images.
+	const dpr = Math.min(window.devicePixelRatio || 1, 2);
+	return thumbWidth(getColumns(), window.innerWidth * dpr);
 }
 
 function renderImages(grid: HTMLElement, images: Image[]): void {
@@ -26,9 +30,13 @@ function renderImages(grid: HTMLElement, images: Image[]): void {
 			showImageInfo(image, link);
 		});
 		const img = el('img');
+		// CORS mode gives the service worker real (cacheable) responses
+		// instead of opaque ones; upload.wikimedia.org sends ACAO: *.
+		img.crossOrigin = 'anonymous';
 		img.src = image.thumbUrl;
 		img.alt = image.title;
 		img.loading = 'lazy';
+		img.decoding = 'async';
 		link.append(img);
 		grid.append(link);
 	}

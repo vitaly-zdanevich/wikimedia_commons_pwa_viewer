@@ -38,7 +38,9 @@ async function cacheFirst(request: Request, cacheName: string): Promise<Response
 	const cached = await caches.match(request);
 	if (cached) return cached;
 	const response = await fetch(request);
-	if (response.ok) {
+	// Opaque responses (no-cors image loads) report ok=false but are
+	// still valid image bytes worth caching.
+	if (response.ok || response.type === 'opaque') {
 		const cache = await caches.open(cacheName);
 		await cache.put(request, response.clone());
 		void trimCache(cacheName, MAX_IMAGES);
