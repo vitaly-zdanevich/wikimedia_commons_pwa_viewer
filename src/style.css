@@ -216,6 +216,11 @@ dialog.info::backdrop {
 	margin: 1.2em 0;
 }
 
+/* Empty line between Used-in links for easier tapping. */
+.info-usage .info-row + .info-row {
+	margin-top: 1.2em;
+}
+
 .info-name {
 	color: inherit;
 	font-weight: bold;
