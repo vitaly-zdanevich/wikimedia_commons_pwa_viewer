@@ -1,5 +1,12 @@
 import { describe, expect, it } from 'vitest';
-import { apiUrl, extractUsername, normalizeCategory, parseImageDetails, thumbWidth } from './api.ts';
+import {
+	apiUrl,
+	extractUsername,
+	imageFromCachedUrl,
+	normalizeCategory,
+	parseImageDetails,
+	thumbWidth,
+} from './api.ts';
 
 describe('apiUrl', () => {
 	it('targets the Commons API with CORS enabled', () => {
@@ -23,6 +30,32 @@ describe('normalizeCategory', () => {
 
 	it('keeps plain names untouched', () => {
 		expect(normalizeCategory('Cats')).toBe('Cats');
+	});
+});
+
+describe('imageFromCachedUrl', () => {
+	it('rebuilds an image from a cached thumbnail URL', () => {
+		const image = imageFromCachedUrl(
+			'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Cat_2010.jpg/800px-Cat_2010.jpg',
+		);
+		expect(image).toEqual({
+			title: 'File:Cat 2010.jpg',
+			thumbUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Cat_2010.jpg/800px-Cat_2010.jpg',
+			originalUrl: 'https://upload.wikimedia.org/wikipedia/commons/4/4d/Cat_2010.jpg',
+			pageUrl: 'https://commons.wikimedia.org/wiki/File:Cat_2010.jpg',
+		});
+	});
+
+	it('rebuilds an image from a cached original URL', () => {
+		const image = imageFromCachedUrl(
+			'https://upload.wikimedia.org/wikipedia/commons/4/4d/Cat_2010.jpg',
+		);
+		expect(image?.title).toBe('File:Cat 2010.jpg');
+		expect(image?.originalUrl).toBe('https://upload.wikimedia.org/wikipedia/commons/4/4d/Cat_2010.jpg');
+	});
+
+	it('ignores foreign URLs', () => {
+		expect(imageFromCachedUrl('https://example.org/a/ab/x.jpg')).toBeUndefined();
 	});
 });
 

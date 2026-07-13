@@ -91,6 +91,28 @@ export async function fetchCategoryImages(
 	};
 }
 
+// Rebuilds an Image from a cached upload.wikimedia.org URL, so the
+// offline "cached" view can be listed without any network.
+export function imageFromCachedUrl(url: string): Image | undefined {
+	const match =
+		/upload\.wikimedia\.org\/wikipedia\/commons\/(thumb\/)?([0-9a-f])\/([0-9a-f]{2})\/([^/]+)/
+			.exec(url);
+	if (!match) return undefined;
+	const [, , shard1, shard2, rawName] = match;
+	let name = rawName;
+	try {
+		name = decodeURIComponent(rawName);
+	} catch {
+		// Not URL-encoded; use as is.
+	}
+	return {
+		title: `File:${name.replace(/_/g, ' ')}`,
+		thumbUrl: url,
+		originalUrl: `https://upload.wikimedia.org/wikipedia/commons/${shard1}/${shard2}/${rawName}`,
+		pageUrl: `https://commons.wikimedia.org/wiki/File:${rawName}`,
+	};
+}
+
 // The Artist extmetadata is HTML, usually with a link to the author's
 // User: page; the page name is the account name uploads are filed under.
 export function extractUsername(artistHtml: string): string | undefined {

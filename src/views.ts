@@ -5,9 +5,11 @@ import {
 	fetchParentCategories,
 	fetchSubcategories,
 	fetchUserImages,
+	imageFromCachedUrl,
 	searchImages,
 	thumbWidth,
 } from './api.ts';
+import { IMAGE_CACHE } from './cache-names.ts';
 import { el, message } from './dom.ts';
 import { showImageInfo } from './overlay.ts';
 import { getColumns } from './prefs.ts';
@@ -124,6 +126,31 @@ export async function renderCategory(root: HTMLElement, category: string): Promi
 export function renderUser(root: HTMLElement, user: string): void {
 	document.title = user;
 	imageFeed(root, (cont) => fetchUserImages(user, currentThumbWidth(), cont));
+}
+
+// Offline grid of the images already in the service worker cache.
+export async function renderCached(root: HTMLElement): Promise<void> {
+	document.title = 'Cached';
+	const cache = await caches.open(IMAGE_CACHE);
+	const keys = await cache.keys();
+	// One entry per file; prefer the thumbnail over the original.
+	const byTitle = new Map<string, Image>();
+	for (const request of keys) {
+		const image = imageFromCachedUrl(request.url);
+		if (!image) continue;
+		const existing = byTitle.get(image.title);
+		if (!existing || (!existing.thumbUrl.includes('/thumb/') && image.thumbUrl.includes('/thumb/'))) {
+			byTitle.set(image.title, image);
+		}
+	}
+	const images = [...byTitle.values()];
+	if (images.length === 0) {
+		root.append(message('No cached images yet.'));
+		return;
+	}
+	const grid = el('div', 'grid');
+	root.append(grid);
+	renderImages(grid, images);
 }
 
 export function renderSearch(root: HTMLElement, query: string): void {

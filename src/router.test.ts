@@ -30,6 +30,10 @@ describe('parseHash', () => {
 		expect(parseHash('#/user/')).toEqual({ view: 'home' });
 	});
 
+	it('parses the cached view', () => {
+		expect(parseHash('#/cached')).toEqual({ view: 'cached' });
+	});
+
 	it('parses nearby coordinates', () => {
 		expect(parseHash('#/nearby/52.5,13.4')).toEqual({
 			view: 'nearby',

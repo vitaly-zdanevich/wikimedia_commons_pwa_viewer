@@ -3,6 +3,7 @@ export type Route =
 	| { view: 'category'; category: string }
 	| { view: 'search'; query: string }
 	| { view: 'user'; user: string }
+	| { view: 'cached' }
 	| { view: 'nearby'; lat: number; lon: number };
 
 export function parseHash(hash: string): Route {
@@ -19,6 +20,8 @@ export function parseHash(hash: string): Route {
 		case 'user':
 			if (arg) return { view: 'user', user: arg };
 			break;
+		case 'cached':
+			return { view: 'cached' };
 		case 'nearby': {
 			const [lat, lon] = arg.split(',').map(Number);
 			if (Number.isFinite(lat) && Number.isFinite(lon)) {

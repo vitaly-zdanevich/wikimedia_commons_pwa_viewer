@@ -1,7 +1,7 @@
 import { suggestCategories } from './api.ts';
 import { getColumns, getUsername, setColumns, setUsername, type Columns } from './prefs.ts';
 import { categoryHash, nearbyHash, parseHash, searchHash, userHash } from './router.ts';
-import { renderCategory, renderHome, renderNearby, renderSearch, renderUser } from './views.ts';
+import { renderCached, renderCategory, renderHome, renderNearby, renderSearch, renderUser } from './views.ts';
 import './style.css';
 
 const app = document.querySelector<HTMLElement>('#app')!;
@@ -32,6 +32,9 @@ function render(): void {
 			break;
 		case 'user':
 			void renderUser(app, route.user);
+			break;
+		case 'cached':
+			void renderCached(app);
 			break;
 		case 'nearby':
 			void renderNearby(app, route.lat, route.lon);
@@ -93,6 +96,7 @@ usernameInput.addEventListener('input', () => {
 });
 
 userLink.addEventListener('click', () => prefsDialog.close());
+document.querySelector('#view-cached')!.addEventListener('click', () => prefsDialog.close());
 
 prefsButton.addEventListener('click', () => {
 	const checked = prefsDialog.querySelector<HTMLInputElement>(

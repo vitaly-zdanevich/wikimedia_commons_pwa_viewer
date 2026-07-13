@@ -1,9 +1,7 @@
 /// <reference lib="webworker" />
-const sw = self as unknown as ServiceWorkerGlobalScope;
+import { API_CACHE, IMAGE_CACHE, STATIC_CACHE } from './cache-names.ts';
 
-const STATIC_CACHE = 'static-v1';
-const IMAGE_CACHE = 'images-v1';
-const API_CACHE = 'api-v1';
+const sw = self as unknown as ServiceWorkerGlobalScope;
 const KNOWN_CACHES = [STATIC_CACHE, IMAGE_CACHE, API_CACHE];
 const MAX_IMAGES = 1000;
 
