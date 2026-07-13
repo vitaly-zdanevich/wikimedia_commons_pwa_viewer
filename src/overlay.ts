@@ -125,6 +125,9 @@ export function showImageInfo(image: Image, source?: HTMLElement): void {
 
 	document.body.append(dialog);
 	dialog.showModal();
+	// showModal focuses the first link, drawing a focus ring on the
+	// file name on every open; keyboard Tab focus still works.
+	(document.activeElement as HTMLElement | null)?.blur();
 
 	fetchImageDetails(image.title, navigator.language)
 		.then((details) => {
