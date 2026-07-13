@@ -7,23 +7,10 @@ import {
 	searchImages,
 	thumbWidth,
 } from './api.ts';
+import { el, message } from './dom.ts';
+import { showImageInfo } from './overlay.ts';
 import { getColumns } from './prefs.ts';
 import { categoryHash } from './router.ts';
-
-function el<K extends keyof HTMLElementTagNameMap>(
-	tag: K,
-	className?: string,
-): HTMLElementTagNameMap[K] {
-	const node = document.createElement(tag);
-	if (className) node.className = className;
-	return node;
-}
-
-function message(text: string): HTMLElement {
-	const p = el('p', 'empty');
-	p.textContent = text;
-	return p;
-}
 
 function currentThumbWidth(): number {
 	return thumbWidth(getColumns(), window.innerWidth * (window.devicePixelRatio || 1));
@@ -33,8 +20,10 @@ function renderImages(grid: HTMLElement, images: Image[]): void {
 	for (const image of images) {
 		const link = el('a');
 		link.href = image.pageUrl;
-		link.target = '_blank';
-		link.rel = 'noopener';
+		link.addEventListener('click', (event) => {
+			event.preventDefault();
+			showImageInfo(image);
+		});
 		const img = el('img');
 		img.src = image.thumbUrl;
 		img.alt = image.title;

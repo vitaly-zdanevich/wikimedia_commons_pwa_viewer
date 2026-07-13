@@ -152,6 +152,86 @@ export async function searchImages(
 	};
 }
 
+export interface ImageDetails {
+	caption?: string;
+	description?: string;
+	date?: string;
+	source?: string;
+	author?: string;
+	license?: string;
+	licenseUrl?: string;
+	versions: number;
+	categories: string[];
+}
+
+interface DetailsPage {
+	imageinfo?: { extmetadata?: Record<string, { value?: string }> }[];
+	categories?: { title: string }[];
+}
+
+function firstPage(data: unknown): DetailsPage | undefined {
+	const query = (data as { query?: { pages?: Record<string, DetailsPage> } }).query;
+	return Object.values(query?.pages ?? {})[0];
+}
+
+// The three responses come from fetchImageDetails; split out and pure so
+// the field mapping is testable without network.
+export function parseImageDetails(
+	main: unknown,
+	versions: unknown,
+	caption: unknown,
+	lang = 'en',
+): ImageDetails {
+	const meta = firstPage(main)?.imageinfo?.[0]?.extmetadata ?? {};
+	const field = (name: string): string | undefined => meta[name]?.value || undefined;
+
+	const entities = (caption as { entities?: Record<string, { labels?: Record<string, { value?: string }> }> })
+		?.entities;
+	const labels = Object.values(entities ?? {})[0]?.labels ?? {};
+	const captionText =
+		labels[lang.split('-')[0]]?.value ?? labels.en?.value ?? Object.values(labels)[0]?.value;
+
+	return {
+		caption: captionText,
+		description: field('ImageDescription'),
+		date: field('DateTimeOriginal'),
+		source: field('Credit'),
+		author: field('Artist'),
+		license: field('LicenseShortName'),
+		licenseUrl: field('LicenseUrl'),
+		versions: firstPage(versions)?.imageinfo?.length ?? 0,
+		categories: (firstPage(main)?.categories ?? []).map((c) => normalizeCategory(c.title)),
+	};
+}
+
+export async function fetchImageDetails(title: string, lang = 'en'): Promise<ImageDetails> {
+	const [main, versions, caption] = await Promise.all([
+		get({
+			action: 'query',
+			titles: title,
+			prop: 'imageinfo|categories',
+			iiprop: 'extmetadata',
+			clshow: '!hidden',
+			cllimit: '100',
+		}),
+		get({
+			action: 'query',
+			titles: title,
+			prop: 'imageinfo',
+			iiprop: 'timestamp',
+			iilimit: '500',
+		}),
+		// Structured-data caption; missing entities are not an error.
+		get({
+			action: 'wbgetentities',
+			titles: title,
+			sites: 'commonswiki',
+			props: 'labels',
+		}).catch(() => undefined),
+	]);
+	return parseImageDetails(main, versions, caption, lang);
+}
+
 export interface Nearby {
 	categories: string[];
 	images: Image[];

@@ -49,7 +49,6 @@ searchInput.addEventListener('input', () => {
 		suggestions.replaceChildren();
 		for (const category of categories) {
 			const link = document.createElement('a');
-			link.className = 'chip';
 			link.href = categoryHash(category);
 			link.textContent = category;
 			suggestions.append(link);
@@ -92,6 +91,17 @@ prefsDialog.addEventListener('change', (event) => {
 prefsDialog.addEventListener('click', (event) => {
 	if (event.target === prefsDialog) prefsDialog.close();
 });
+
+// Hide the top bar while scrolling down, bring it back on scroll up.
+const header = document.querySelector('header')!;
+let lastScrollY = window.scrollY;
+window.addEventListener('scroll', () => {
+	const y = window.scrollY;
+	if (Math.abs(y - lastScrollY) > 4) {
+		header.classList.toggle('hidden', y > lastScrollY && y > 60);
+		lastScrollY = y;
+	}
+}, { passive: true });
 
 window.addEventListener('hashchange', render);
 applyColumns(getColumns());

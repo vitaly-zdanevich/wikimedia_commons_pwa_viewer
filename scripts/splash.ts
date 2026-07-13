@@ -185,12 +185,8 @@ export function splashAssets(): SplashAsset[] {
 
 export function appleTouchIcon(): Uint8Array {
 	const size = 180;
+	// Black background matching the app icon; iOS shows it unmasked.
 	const rgb = new Uint8Array(size * size * 3);
-	for (let i = 0; i < size * size; i++) {
-		rgb[i * 3] = LOGO_BLUE[0];
-		rgb[i * 3 + 1] = LOGO_BLUE[1];
-		rgb[i * 3 + 2] = LOGO_BLUE[2];
-	}
 	drawLogo(rgb, size, size / 2, size / 2, size, [255, 255, 255]);
 	return encodePng(size, size, rgb);
 }
