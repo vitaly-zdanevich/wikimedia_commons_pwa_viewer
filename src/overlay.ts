@@ -95,7 +95,7 @@ export function showImageInfo(image: Image, source?: HTMLElement): void {
 	const dialog = el('dialog', 'info');
 	const body = el('div', 'info-body');
 	const status = row('Loading…');
-	const original = el('p', 'info-row');
+	const original = el('p', 'info-row info-original');
 	const originalLink = el('a');
 	originalLink.href = image.originalUrl;
 	originalLink.textContent = 'Original';

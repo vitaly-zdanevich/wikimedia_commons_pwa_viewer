@@ -213,6 +213,11 @@ dialog.info::backdrop {
 	overflow-wrap: break-word;
 }
 
+/* Breathing room around the Original link for easier tapping. */
+.info-original {
+	margin: 1.2em 0;
+}
+
 .info-name {
 	color: inherit;
 	font-weight: bold;
