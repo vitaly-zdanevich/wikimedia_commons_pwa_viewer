@@ -13,6 +13,7 @@ const prefsButton = document.querySelector<HTMLButtonElement>('#prefs')!;
 const prefsDialog = document.querySelector<HTMLDialogElement>('#prefs-dialog')!;
 const usernameInput = document.querySelector<HTMLInputElement>('#username')!;
 const userLink = document.querySelector<HTMLAnchorElement>('#user-link')!;
+const header = document.querySelector('header')!;
 
 function applyColumns(columns: Columns): void {
 	document.documentElement.style.setProperty('--cols', String(columns));
@@ -20,8 +21,9 @@ function applyColumns(columns: Columns): void {
 
 function render(): void {
 	app.replaceChildren();
-	app.scrollTop = 0;
 	suggestions.replaceChildren();
+	header.classList.remove('hidden');
+	window.scrollTo(0, 0);
 	const route = parseHash(location.hash);
 	switch (route.view) {
 		case 'category':
@@ -122,7 +124,6 @@ prefsDialog.addEventListener('click', (event) => {
 });
 
 // Hide the top bar while scrolling down, bring it back on scroll up.
-const header = document.querySelector('header')!;
 let lastScrollY = window.scrollY;
 window.addEventListener('scroll', () => {
 	const y = window.scrollY;

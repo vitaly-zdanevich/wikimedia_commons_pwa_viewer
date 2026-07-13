@@ -1,3 +1,5 @@
+import { categoryHash } from './router.ts';
+
 export function el<K extends keyof HTMLElementTagNameMap>(
 	tag: K,
 	className?: string,
@@ -5,6 +7,13 @@ export function el<K extends keyof HTMLElementTagNameMap>(
 	const node = document.createElement(tag);
 	if (className) node.className = className;
 	return node;
+}
+
+export function categoryChip(category: string): HTMLAnchorElement {
+	const link = el('a', 'chip');
+	link.href = categoryHash(category);
+	link.textContent = category;
+	return link;
 }
 
 export function message(text: string): HTMLElement {

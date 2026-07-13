@@ -254,6 +254,12 @@ dialog.info::backdrop {
 	background: rgb(0 0 0 / 50%);
 }
 
+#prefs-dialog fieldset {
+	border: none;
+	margin: 0;
+	padding: 0;
+}
+
 #prefs-dialog label {
 	display: block;
 	padding: 0.3rem 0;

@@ -10,10 +10,9 @@ import {
 	thumbWidth,
 } from './api.ts';
 import { IMAGE_CACHE } from './cache-names.ts';
-import { el, message } from './dom.ts';
+import { categoryChip, el, message } from './dom.ts';
 import { showImageInfo } from './overlay.ts';
 import { getColumns } from './prefs.ts';
-import { categoryHash } from './router.ts';
 
 function currentThumbWidth(): number {
 	// Cap the density multiplier: on DPR-3 phones full-density thumbs
@@ -73,6 +72,7 @@ function imageFeed(
 			root.append(message('Failed to load images.'));
 		} finally {
 			loading = false;
+			if (done) observer.disconnect();
 		}
 	}
 
@@ -94,10 +94,7 @@ function categoryChips(
 	caption.textContent = label;
 	section.append(caption);
 	for (const category of categories) {
-		const link = el('a', 'chip');
-		link.href = categoryHash(category);
-		link.textContent = category;
-		section.append(link);
+		section.append(categoryChip(category));
 	}
 	root.append(section);
 }

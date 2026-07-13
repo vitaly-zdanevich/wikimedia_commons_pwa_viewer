@@ -1,6 +1,6 @@
 import { extractUsername, fetchImageDetails, type Image, type ImageDetails } from './api.ts';
-import { el } from './dom.ts';
-import { categoryHash, userHash } from './router.ts';
+import { categoryChip, el } from './dom.ts';
+import { userHash } from './router.ts';
 
 // Extmetadata values are HTML; the overlay shows plain text.
 function htmlToText(html: string): string {
@@ -73,10 +73,7 @@ function detailRows(details: ImageDetails): HTMLElement[] {
 	if (details.categories.length > 0) {
 		const chips = el('nav', 'chips');
 		for (const category of details.categories) {
-			const link = el('a', 'chip');
-			link.href = categoryHash(category);
-			link.textContent = category;
-			chips.append(link);
+			chips.append(categoryChip(category));
 		}
 		rows.push(chips);
 	}

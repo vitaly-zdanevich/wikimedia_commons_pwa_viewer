@@ -5,7 +5,7 @@
 // dark (#000) and light (#fff) variants are selected.
 import { deflateSync } from 'node:zlib';
 
-export interface DeviceProfile {
+interface DeviceProfile {
 	width: number; // CSS points, portrait
 	height: number;
 	dpr: number;
@@ -13,7 +13,7 @@ export interface DeviceProfile {
 }
 
 // One entry per unique iPhone/iPad screen profile; duplicates share files.
-export const DEVICES: DeviceProfile[] = [
+const DEVICES: DeviceProfile[] = [
 	{ width: 375, height: 667, dpr: 2, landscape: false }, // iPhone SE
 	{ width: 414, height: 736, dpr: 3, landscape: false }, // iPhone 8 Plus
 	{ width: 375, height: 812, dpr: 3, landscape: false }, // iPhone X/XS/12-13 mini
@@ -35,7 +35,7 @@ export const DEVICES: DeviceProfile[] = [
 
 type Rgb = [number, number, number];
 
-export const THEMES: { scheme: 'light' | 'dark'; bg: Rgb }[] = [
+const THEMES: { scheme: 'light' | 'dark'; bg: Rgb }[] = [
 	{ scheme: 'light', bg: [255, 255, 255] },
 	{ scheme: 'dark', bg: [0, 0, 0] },
 ];
@@ -139,7 +139,7 @@ function drawLogo(
 	}
 }
 
-export function renderImage(width: number, height: number, bg: Rgb, logo: Rgb): Uint8Array {
+function renderImage(width: number, height: number, bg: Rgb, logo: Rgb): Uint8Array {
 	const rgb = new Uint8Array(width * height * 3);
 	for (let i = 0; i < width * height; i++) {
 		rgb[i * 3] = bg[0];

@@ -4,6 +4,7 @@ import { API_CACHE, IMAGE_CACHE, STATIC_CACHE } from './cache-names.ts';
 const sw = self as unknown as ServiceWorkerGlobalScope;
 const KNOWN_CACHES = [STATIC_CACHE, IMAGE_CACHE, API_CACHE];
 const MAX_IMAGES = 1000;
+const MAX_API_RESPONSES = 500;
 
 sw.addEventListener('install', (event) => {
 	event.waitUntil(
@@ -51,7 +52,10 @@ async function networkFirst(request: Request, cacheName: string): Promise<Respon
 	const cache = await caches.open(cacheName);
 	try {
 		const response = await fetch(request);
-		if (response.ok) await cache.put(request, response.clone());
+		if (response.ok) {
+			await cache.put(request, response.clone());
+			if (cacheName === API_CACHE) void trimCache(cacheName, MAX_API_RESPONSES);
+		}
 		return response;
 	} catch (err) {
 		const cached = await cache.match(request);
@@ -78,5 +82,3 @@ sw.addEventListener('fetch', (event) => {
 		}
 	}
 });
-
-export {};
