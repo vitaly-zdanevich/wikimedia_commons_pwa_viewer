@@ -80,5 +80,9 @@ export default defineConfig({
 	},
 	test: {
 		environment: 'node',
+		coverage: {
+			reporter: ['text-summary', 'lcov'],
+			include: ['src/**', 'scripts/**'],
+		},
 	},
 });

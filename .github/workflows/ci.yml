@@ -8,19 +8,25 @@ on:
 jobs:
   check:
     runs-on: ubuntu-latest
+    env:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
     steps:
       - uses: actions/checkout@v4
         with:
-          # Settings shows the 5 latest commits, embedded at build time.
-          fetch-depth: 5
+          # Full history: Sonar blame data, and Settings shows the 5
+          # latest commits embedded at build time.
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
       - run: npm ci
       - run: npm run lint
-      - run: npm test
+      - run: npm test -- --coverage
       - run: npm run build
+      # Skips until the SONAR_TOKEN repository secret exists.
+      - uses: SonarSource/sonarqube-scan-action@v5
+        if: ${{ env.SONAR_TOKEN != '' }}
       - uses: actions/upload-pages-artifact@v3
         if: github.ref == 'refs/heads/main'
         with:
