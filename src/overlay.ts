@@ -85,7 +85,13 @@ function showOriginal(image: Image): void {
 	dialog.showModal();
 }
 
-export function showImageInfo(image: Image): void {
+export function showImageInfo(image: Image, source?: HTMLElement): void {
+	// Black out the other grid images so it is clear, through the
+	// translucent overlay, which image the info belongs to.
+	const grid = source?.closest('.grid');
+	grid?.classList.add('info-open');
+	source?.classList.add('info-active');
+
 	const dialog = el('dialog', 'info');
 	const body = el('div', 'info-body');
 	const status = row('Loading…');
@@ -109,7 +115,11 @@ export function showImageInfo(image: Image): void {
 	dialog.addEventListener('click', (event) => {
 		if (!(event.target instanceof HTMLAnchorElement)) dialog.close();
 	});
-	dialog.addEventListener('close', () => dialog.remove());
+	dialog.addEventListener('close', () => {
+		grid?.classList.remove('info-open');
+		source?.classList.remove('info-active');
+		dialog.remove();
+	});
 	// A tapped category chip navigates; close the overlay with it.
 	window.addEventListener('hashchange', () => dialog.close(), { once: true });
 

@@ -22,7 +22,7 @@ function renderImages(grid: HTMLElement, images: Image[]): void {
 		link.href = image.pageUrl;
 		link.addEventListener('click', (event) => {
 			event.preventDefault();
-			showImageInfo(image);
+			showImageInfo(image, link);
 		});
 		const img = el('img');
 		img.src = image.thumbUrl;
