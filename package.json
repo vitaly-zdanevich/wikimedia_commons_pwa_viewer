@@ -1,0 +1,22 @@
+{
+	"name": "wikimedia_commons_pwa_viewer",
+	"private": true,
+	"version": "0.1.0",
+	"type": "module",
+	"scripts": {
+		"dev": "vite",
+		"build": "tsc --noEmit && vite build",
+		"preview": "vite preview",
+		"lint": "eslint .",
+		"test": "vitest run"
+	},
+	"devDependencies": {
+		"@eslint/js": "^10.0.1",
+		"@types/node": "^26.1.1",
+		"eslint": "^10.7.0",
+		"typescript": "^6.0.3",
+		"typescript-eslint": "^8.63.0",
+		"vite": "^8.1.4",
+		"vitest": "^4.1.10"
+	}
+}

@@ -1,0 +1,134 @@
+:root {
+	--cols: 1;
+	color-scheme: light dark;
+	--bg: #fff;
+	--fg: #111;
+	--chip-bg: #eee;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--bg: #000;
+		--fg: #ddd;
+		--chip-bg: #222;
+	}
+}
+
+* {
+	box-sizing: border-box;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+	background: var(--bg);
+	color: var(--fg);
+	font-family: system-ui, sans-serif;
+}
+
+header {
+	display: flex;
+	gap: 0.5rem;
+	padding: 0.5rem;
+	position: sticky;
+	top: 0;
+	background: var(--bg);
+	z-index: 1;
+}
+
+#search-form {
+	flex: 1;
+	display: flex;
+}
+
+#search {
+	flex: 1;
+	font-size: 1rem;
+	padding: 0.4rem 0.6rem;
+	border: 1px solid var(--chip-bg);
+	border-radius: 4px;
+	background: var(--bg);
+	color: var(--fg);
+}
+
+header button {
+	font-size: 1rem;
+	background: var(--chip-bg);
+	color: var(--fg);
+	border: none;
+	border-radius: 4px;
+	padding: 0 0.6rem;
+	cursor: pointer;
+}
+
+.chips {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.4rem;
+	align-items: center;
+	padding: 0.4rem 0.5rem;
+}
+
+.chips-label {
+	opacity: 0.6;
+}
+
+.chip {
+	background: var(--chip-bg);
+	color: var(--fg);
+	text-decoration: none;
+	border-radius: 999px;
+	padding: 0.2rem 0.7rem;
+	font-size: 0.9rem;
+}
+
+/* Images: zero distance between them, nothing else. */
+.grid {
+	display: grid;
+	grid-template-columns: repeat(var(--cols), 1fr);
+	gap: 0;
+}
+
+.grid a {
+	display: block;
+	font-size: 0;
+	line-height: 0;
+}
+
+.grid img {
+	display: block;
+	width: 100%;
+	height: auto;
+	margin: 0;
+	padding: 0;
+	border: none;
+}
+
+.empty {
+	padding: 1rem;
+	text-align: center;
+	opacity: 0.7;
+}
+
+.sentinel {
+	height: 1px;
+}
+
+#prefs-dialog {
+	background: var(--bg);
+	color: var(--fg);
+	border: 1px solid var(--chip-bg);
+	border-radius: 8px;
+	padding: 1rem;
+}
+
+#prefs-dialog::backdrop {
+	background: rgb(0 0 0 / 50%);
+}
+
+#prefs-dialog label {
+	display: block;
+	padding: 0.3rem 0;
+	cursor: pointer;
+}

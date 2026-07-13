@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="theme-color" content="#fff" media="(prefers-color-scheme: light)">
+	<meta name="theme-color" content="#000" media="(prefers-color-scheme: dark)">
+	<meta name="description" content="Wikimedia Commons image viewer">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+	<meta name="apple-mobile-web-app-title" content="Commons">
+	<link rel="icon" href="icon.svg" type="image/svg+xml">
+	<link rel="manifest" href="manifest.webmanifest">
+	<title>Commons Viewer</title>
+</head>
+<body>
+	<header>
+		<form id="search-form" role="search">
+			<input id="search" type="search" placeholder="Search Commons" autocomplete="off">
+		</form>
+		<button id="geo" type="button" title="Nearby" aria-label="Show nearby images">📍</button>
+		<button id="prefs" type="button" title="Preferences" aria-label="Preferences">⚙</button>
+	</header>
+	<nav id="suggestions" class="chips"></nav>
+	<main id="app"></main>
+	<dialog id="prefs-dialog">
+		<form method="dialog">
+			<fieldset style="border: none; margin: 0; padding: 0;">
+				<legend>Images per line</legend>
+				<label><input type="radio" name="columns" value="1"> One</label>
+				<label><input type="radio" name="columns" value="2"> Two</label>
+			</fieldset>
+			<button>Close</button>
+		</form>
+	</dialog>
+	<script type="module" src="/src/main.ts"></script>
+</body>
+</html>
